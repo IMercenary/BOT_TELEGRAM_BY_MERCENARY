@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
@@ -14,14 +16,19 @@ namespace LauncherBot
     
     class Program
     {
-        static string TOKEN = "TOKEN";
-        private static WebProxy ProxyClient = new WebProxy(GetProxy.ParseProxies());
+        static string TOKEN = "730658494:AAFCWkKo491owHwlPO54-RrPoTI6tFnHH0w";
+        private static WebProxy ProxyClient = new WebProxy(GetProxy.ParseProxies("Iran"));
         // Создаем объекты класса Телеграм бота
         private static TelegramBotClient Bot = new TelegramBotClient(TOKEN, ProxyClient);
         // Точка входа в консольное приложение
         public static void Main(string[] args)
         {
-            var me = Bot.GetMeAsync().Result;
+            try
+            {
+                var me = Bot.GetMeAsync().Result;
+
+            
+            
             Console.Title = me.Username;
 
             Bot.OnMessage += BotOnMessageReceived;
@@ -35,6 +42,12 @@ namespace LauncherBot
             Console.WriteLine($"Start listening for @{me.Username}");
             Console.ReadLine();
             Bot.StopReceiving();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         private static async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
@@ -46,33 +59,30 @@ namespace LauncherBot
             switch (message.Text.Split(' ').First())
             {
                 // send inline keyboard
-                case "/inline":
+                case "/menu":
                     await Bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-
-                    await Task.Delay(500); // simulate longer running task
-
                     var inlineKeyboard = new InlineKeyboardMarkup(new[]
                     {
                         new [] // first row
                         {
-                            InlineKeyboardButton.WithCallbackData("1.1"),
-                            InlineKeyboardButton.WithCallbackData("1.2"),
+                            InlineKeyboardButton.WithCallbackData("Правила"),
+                            InlineKeyboardButton.WithCallbackData("Библиотека"),
                         },
                         new [] // second row
                         {
-                            InlineKeyboardButton.WithCallbackData("2.1"),
-                            InlineKeyboardButton.WithCallbackData("2.2"),
+                            InlineKeyboardButton.WithCallbackData("Репозитории"),
+                            InlineKeyboardButton.WithCallbackData("Статистика"),
                         }
                     });
 
                     await Bot.SendTextMessageAsync(
                         message.Chat.Id,
-                        "Choose",
+                        "Меню чата:",
                         replyMarkup: inlineKeyboard);
                     break;
 
                 // send custom keyboard
-                case "/keyboard":
+                case "/help":
                     ReplyKeyboardMarkup ReplyKeyboard = new[]
                     {
                         new[] { "1.1", "1.2" },
@@ -81,7 +91,7 @@ namespace LauncherBot
 
                     await Bot.SendTextMessageAsync(
                         message.Chat.Id,
-                        "Choose",
+                        "Меню:",
                         replyMarkup: ReplyKeyboard);
                     break;
 
@@ -89,7 +99,7 @@ namespace LauncherBot
                 case "/photo":
                     await Bot.SendChatActionAsync(message.Chat.Id, ChatAction.UploadPhoto);
 
-                    const string file = @"Files/tux.png";
+                    const string file = @"/bicycle.png";
 
                     var fileName = file.Split(Path.DirectorySeparatorChar).Last();
 
@@ -103,46 +113,52 @@ namespace LauncherBot
                     break;
 
                 // request location or contact
-                case "/request":
-                    var RequestReplyKeyboard = new ReplyKeyboardMarkup(new[]
-                    {
-                        KeyboardButton.WithRequestLocation("Location"),
-                        KeyboardButton.WithRequestContact("Contact"),
-                    });
+                //case "/request":
+                //    var RequestReplyKeyboard = new ReplyKeyboardMarkup(new[]
+                //    {
+                //        KeyboardButton.WithRequestLocation("Location"),
+                //        KeyboardButton.WithRequestContact("Contact"),
+                //    });
 
-                    await Bot.SendTextMessageAsync(
-                        message.Chat.Id,
-                        "Who or Where are you?",
-                        replyMarkup: RequestReplyKeyboard);
-                    break;
+                //    await Bot.SendTextMessageAsync(
+                //        message.Chat.Id,
+                //        "Who or Where are you?",
+                //        replyMarkup: RequestReplyKeyboard);
+                //    break;
 
-                default:
-                    const string usage = @"
-                    Usage:
-                    /inline   - send inline keyboard
-                    /keyboard - send custom keyboard
-                    /photo    - send a photo
-                    /request  - request location or contact";
+                //case "/help":
+                //    const string usage = @"
+                //    Команды:
+                //    /menu   - меню чата";
+                //    /// - send custom keyboard
+                //    ///photo    - send a photo
+                //    ///request  - request location or contact";
 
-                    await Bot.SendTextMessageAsync(
-                        message.Chat.Id,
-                        usage,
-                        replyMarkup: new ReplyKeyboardRemove());
-                    break;
+                //    await Bot.SendTextMessageAsync(
+                //        message.Chat.Id,
+                //        usage,
+                //        replyMarkup: new ReplyKeyboardRemove());
+                //    break;
             }
         }
 
         private static async void BotOnCallbackQueryReceived(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
         {
             var callbackQuery = callbackQueryEventArgs.CallbackQuery;
+            if (callbackQuery.Message.Text == "Правила")
+            {
+                await Bot.AnswerCallbackQueryAsync(
+                    callbackQuery.Id, @"Правила чата:
+1. Не оскарбляй учатсников !
+");
+            }
 
-            await Bot.AnswerCallbackQueryAsync(
-                callbackQuery.Id,
-                $"Received {callbackQuery.Data}");
 
             await Bot.SendTextMessageAsync(
                 callbackQuery.Message.Chat.Id,
-                $"Received {callbackQuery.Data}");
+                @"Правила чата:
+1. Не оскарбляй учатсников !
+");
         }
 
         private static async void BotOnInlineQueryReceived(object sender, InlineQueryEventArgs inlineQueryEventArgs)

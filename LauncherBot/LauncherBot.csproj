@@ -6,6 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="bicycle.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="bicycle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>LauncherBot</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Telegram.Bot" Version="14.10.0" />
   </ItemGroup>
 
