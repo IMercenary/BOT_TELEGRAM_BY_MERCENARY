@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\..\..\..\Desktop\mysql-connector-net-6.10.8-noinstall\v4.5.2\MySql.Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

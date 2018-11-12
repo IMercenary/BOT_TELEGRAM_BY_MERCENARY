@@ -5,9 +5,11 @@ VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LauncherBot", "LauncherBot\LauncherBot.csproj", "{E55A3F34-F77D-441D-9F33-CF0102A48C9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT_ProxyParser", "ProxyParserBM\MT_ProxyParser.csproj", "{9702133E-A2B3-42BB-868E-AB6CA95353C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MT_ProxyParser", "ProxyParserBM\MT_ProxyParser.csproj", "{9702133E-A2B3-42BB-868E-AB6CA95353C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingAPP", "TestingAPP\TestingAPP.csproj", "{503D8FF7-7CFA-448C-AC51-9E120B081DF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestingAPP", "TestingAPP\TestingAPP.csproj", "{503D8FF7-7CFA-448C-AC51-9E120B081DF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TBotMySQL", "TBotMySQL\TBotMySQL.csproj", "{A7516B3F-0B46-4D5A-9D91-256D61E2A7BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{503D8FF7-7CFA-448C-AC51-9E120B081DF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{503D8FF7-7CFA-448C-AC51-9E120B081DF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{503D8FF7-7CFA-448C-AC51-9E120B081DF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7516B3F-0B46-4D5A-9D91-256D61E2A7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7516B3F-0B46-4D5A-9D91-256D61E2A7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7516B3F-0B46-4D5A-9D91-256D61E2A7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7516B3F-0B46-4D5A-9D91-256D61E2A7BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

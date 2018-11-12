@@ -16,7 +16,7 @@ namespace LauncherBot
     
     class Program
     {
-        static string TOKEN = "730658494:AAFCWkKo491owHwlPO54-RrPoTI6tFnHH0w";
+        static string TOKEN = "";
         private static WebProxy ProxyClient = new WebProxy(GetProxy.ParseProxies("Iran"));
         // Создаем объекты класса Телеграм бота
         private static TelegramBotClient Bot = new TelegramBotClient(TOKEN, ProxyClient);
