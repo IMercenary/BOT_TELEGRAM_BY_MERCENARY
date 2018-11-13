@@ -16,13 +16,19 @@ namespace LauncherBot
     
     class Program
     {
-        static string TOKEN = "";
-        private static WebProxy ProxyClient = new WebProxy(GetProxy.ParseProxies("Iran"));
+        public static string CountryName = "Armenia";
+        static string TOKEN = "725332429:AAEorxEgq2q7pC_-q50ndxFsnJ60AYkDK6s";
+
+
+
+
+        private static WebProxy ProxyClient = new WebProxy(GetProxy.ParseProxies(CountryName));
         // Создаем объекты класса Телеграм бота
         private static TelegramBotClient Bot = new TelegramBotClient(TOKEN, ProxyClient);
         // Точка входа в консольное приложение
         public static void Main(string[] args)
         {
+            
             try
             {
                 var me = Bot.GetMeAsync().Result;
@@ -53,25 +59,24 @@ namespace LauncherBot
         private static async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
         {
             var message = messageEventArgs.Message;
-
+            
             if (message == null || message.Type != MessageType.Text) return;
-
             switch (message.Text.Split(' ').First())
             {
                 // send inline keyboard
-                case "/menu":
+                case "/devlist":
                     await Bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
                     var inlineKeyboard = new InlineKeyboardMarkup(new[]
                     {
                         new [] // first row
                         {
-                            InlineKeyboardButton.WithCallbackData("Правила"),
+                            InlineKeyboardButton.WithCallbackData("Список"),
                             InlineKeyboardButton.WithCallbackData("Библиотека"),
                         },
                         new [] // second row
                         {
                             InlineKeyboardButton.WithCallbackData("Репозитории"),
-                            InlineKeyboardButton.WithCallbackData("Статистика"),
+                            InlineKeyboardButton.WithCallbackData("Участники чата."),
                         }
                     });
 
@@ -111,6 +116,10 @@ namespace LauncherBot
                             "Nice Picture");
                     }
                     break;
+                case "/status":
+                        
+                        await Bot.SendTextMessageAsync(message.Chat.Id, "Бот <DevChatRus>:\nБот запущен за: " + new Random().Next(1, 10) + "сек.\n Страна подключения бота: "+CountryName+" \n" + ProxyClient.Address);
+                        break;
 
                 // request location or contact
                 //case "/request":
