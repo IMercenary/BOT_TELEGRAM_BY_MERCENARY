@@ -17,7 +17,7 @@ namespace LauncherBot
     class Program
     {
         public static string CountryName = "Armenia";
-        static string TOKEN = "725332429:AAEorxEgq2q7pC_-q50ndxFsnJ60AYkDK6s";
+        static string TOKEN = "628671620:AAEu8IJ82kLTjIbIt0a19cq5I1mm0Cot3Ss";
 
 
 
@@ -39,10 +39,10 @@ namespace LauncherBot
 
             Bot.OnMessage += BotOnMessageReceived;
             Bot.OnMessageEdited += BotOnMessageReceived;
-            Bot.OnCallbackQuery += BotOnCallbackQueryReceived;
-            Bot.OnInlineQuery += BotOnInlineQueryReceived;
-            Bot.OnInlineResultChosen += BotOnChosenInlineResultReceived;
-            Bot.OnReceiveError += BotOnReceiveError;
+            //Bot.OnCallbackQuery += BotOnCallbackQueryReceived;
+            //Bot.OnInlineQuery += BotOnInlineQueryReceived;
+            //Bot.OnInlineResultChosen += BotOnChosenInlineResultReceived;
+            //Bot.OnReceiveError += BotOnReceiveError;
 
             Bot.StartReceiving(Array.Empty<UpdateType>());
             Console.WriteLine($"Start listening for @{me.Username}");
@@ -63,159 +63,12 @@ namespace LauncherBot
             if (message == null || message.Type != MessageType.Text) return;
             switch (message.Text.Split(' ').First())
             {
-                // send inline keyboard
-                case "/devlist":
-                    await Bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-                    var inlineKeyboard = new InlineKeyboardMarkup(new[]
-                    {
-                        new [] // first row
-                        {
-                            InlineKeyboardButton.WithCallbackData("Список"),
-                            InlineKeyboardButton.WithCallbackData("Библиотека"),
-                        },
-                        new [] // second row
-                        {
-                            InlineKeyboardButton.WithCallbackData("Репозитории"),
-                            InlineKeyboardButton.WithCallbackData("Участники чата."),
-                        }
-                    });
 
-                    await Bot.SendTextMessageAsync(
-                        message.Chat.Id,
-                        "Меню чата:",
-                        replyMarkup: inlineKeyboard);
-                    break;
-
-                // send custom keyboard
-                case "/help":
-                    ReplyKeyboardMarkup ReplyKeyboard = new[]
-                    {
-                        new[] { "1.1", "1.2" },
-                        new[] { "2.1", "2.2" },
-                    };
-
-                    await Bot.SendTextMessageAsync(
-                        message.Chat.Id,
-                        "Меню:",
-                        replyMarkup: ReplyKeyboard);
-                    break;
-
-                // send a photo
-                case "/photo":
-                    await Bot.SendChatActionAsync(message.Chat.Id, ChatAction.UploadPhoto);
-
-                    const string file = @"/bicycle.png";
-
-                    var fileName = file.Split(Path.DirectorySeparatorChar).Last();
-
-                    using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        await Bot.SendPhotoAsync(
-                            message.Chat.Id,
-                            fileStream,
-                            "Nice Picture");
-                    }
-                    break;
                 case "/status":
                         
                         await Bot.SendTextMessageAsync(message.Chat.Id, "Бот <DevChatRus>:\nБот запущен за: " + new Random().Next(1, 10) + "сек.\n Страна подключения бота: "+CountryName+" \n" + ProxyClient.Address);
                         break;
-
-                // request location or contact
-                //case "/request":
-                //    var RequestReplyKeyboard = new ReplyKeyboardMarkup(new[]
-                //    {
-                //        KeyboardButton.WithRequestLocation("Location"),
-                //        KeyboardButton.WithRequestContact("Contact"),
-                //    });
-
-                //    await Bot.SendTextMessageAsync(
-                //        message.Chat.Id,
-                //        "Who or Where are you?",
-                //        replyMarkup: RequestReplyKeyboard);
-                //    break;
-
-                //case "/help":
-                //    const string usage = @"
-                //    Команды:
-                //    /menu   - меню чата";
-                //    /// - send custom keyboard
-                //    ///photo    - send a photo
-                //    ///request  - request location or contact";
-
-                //    await Bot.SendTextMessageAsync(
-                //        message.Chat.Id,
-                //        usage,
-                //        replyMarkup: new ReplyKeyboardRemove());
-                //    break;
             }
-        }
-
-        private static async void BotOnCallbackQueryReceived(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
-        {
-            var callbackQuery = callbackQueryEventArgs.CallbackQuery;
-            if (callbackQuery.Message.Text == "Правила")
-            {
-                await Bot.AnswerCallbackQueryAsync(
-                    callbackQuery.Id, @"Правила чата:
-1. Не оскарбляй учатсников !
-");
-            }
-
-
-            await Bot.SendTextMessageAsync(
-                callbackQuery.Message.Chat.Id,
-                @"Правила чата:
-1. Не оскарбляй учатсников !
-");
-        }
-
-        private static async void BotOnInlineQueryReceived(object sender, InlineQueryEventArgs inlineQueryEventArgs)
-        {
-            Console.WriteLine($"Received inline query from: {inlineQueryEventArgs.InlineQuery.From.Id}");
-
-            InlineQueryResultBase[] results = {
-                new InlineQueryResultLocation(
-                    id: "1",
-                    latitude: 40.7058316f,
-                    longitude: -74.2581888f,
-                    title: "New York")   // displayed result
-                    {
-                        InputMessageContent = new InputLocationMessageContent(
-                            latitude: 40.7058316f,
-                            longitude: -74.2581888f)    // message if result is selected
-                    },
-
-                new InlineQueryResultLocation(
-                    id: "2",
-                    latitude: 13.1449577f,
-                    longitude: 52.507629f,
-                    title: "Berlin") // displayed result
-                    {
-
-                        InputMessageContent = new InputLocationMessageContent(
-                            latitude: 13.1449577f,
-                            longitude: 52.507629f)   // message if result is selected
-                    }
-            };
-
-            await Bot.AnswerInlineQueryAsync(
-                inlineQueryEventArgs.InlineQuery.Id,
-                results,
-                isPersonal: true,
-                cacheTime: 0);
-        }
-
-        private static void BotOnChosenInlineResultReceived(object sender, ChosenInlineResultEventArgs chosenInlineResultEventArgs)
-        {
-            Console.WriteLine($"Received inline result: {chosenInlineResultEventArgs.ChosenInlineResult.ResultId}");
-        }
-
-        private static void BotOnReceiveError(object sender, ReceiveErrorEventArgs receiveErrorEventArgs)
-        {
-            Console.WriteLine("Received error: {0} — {1}",
-                receiveErrorEventArgs.ApiRequestException.ErrorCode,
-                receiveErrorEventArgs.ApiRequestException.Message);
         }
     }
 }
